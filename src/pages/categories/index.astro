@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+const categories = (await getCollection("categories")).sort((a, b) =>
+  a.data.name.localeCompare(b.data.name)
+);
+---
+
+<Layout title={`Categories | ${SITE.title}`}>
+  <Header />
+  <Main pageTitle="Categories" pageDesc="Browse products by category.">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        categories.map(({ slug, data, body }) => (
+          <article class="rounded border border-skin-line bg-skin-card p-5">
+            <h2 class="text-lg font-semibold">{data.name}</h2>
+            {data.description ? <p class="mt-2">{data.description}</p> : null}
+            <a
+              href={`/categories/${slug}/`}
+              class="mt-3 inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
+            >
+              View category
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>

@@ -24,6 +24,16 @@ const blog = defineCollection({
     }),
 });
 
+const categories = defineCollection({
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/categories" }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      description: z.string().optional(),
+      image: image().or(z.string()).optional(),
+    }),
+});
+
 const products = defineCollection({
   loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/products" }),
   schema: ({ image }) =>
@@ -36,6 +46,7 @@ const products = defineCollection({
       image: image().or(z.string()).optional(),
       stock: z.number().int().nonnegative().default(0),
       available: z.boolean().default(true),
+      categories: z.array(z.string()).default([]),
     }),
 });
 
@@ -60,4 +71,4 @@ const orders = defineCollection({
   }),
 });
 
-export const collections = { blog, products, orders };
+export const collections = { blog, categories, products, orders };

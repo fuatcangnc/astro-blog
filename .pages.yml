@@ -32,6 +32,22 @@ content:
     label: Ecommerce
     type: group
     items:
+      - name: categories
+        label: Categories
+        type: collection
+        path: src/content/categories
+        format: yaml-frontmatter
+        view:
+          layout: list
+          primary: name
+          fields: [ name, slug ]
+          sort: [ name ]
+          search: [ name, slug ]
+        fields:
+          - { name: name, label: Category name, type: string, required: true }
+          - { name: slug, label: Slug, type: string, required: true }
+          - { name: description, label: Description, type: string }
+          - { name: image, label: Category image, type: image }
       - name: products
         label: Products
         type: collection
@@ -53,6 +69,10 @@ content:
           - { name: image, label: Product image, type: image }
           - { name: stock, label: Stock, type: number, required: true, default: 0 }
           - { name: available, label: Available, type: boolean, default: true }
+          - name: categories
+            label: Categories
+            type: string
+            list: true
       - name: orders
         label: Orders
         type: collection

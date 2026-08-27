@@ -1,0 +1,82 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+export async function getStaticPaths() {
+  const categories = await getCollection("categories");
+  return categories.map(category => ({
+    params: { slug: category.slug },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const { data, body } = category;
+
+const products = (await getCollection("products"))
+  .filter(
+    ({ data }) =>
+      data.available &&
+      (data.categories ?? []).some(
+        value => value.toLowerCase() === category.slug.toLowerCase()
+      )
+  )
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+
+<Layout title={`${data.name} | ${SITE.title}`} description={data.description}>
+  <Header />
+  <Main
+    pageTitle={data.name}
+    pageDesc={data.description ?? "Products in this category."}
+  >
+    {
+      body ? (
+        <div class="prose mb-8 max-w-none">
+          <Fragment set:html={body} />
+        </div>
+      ) : null
+    }
+
+    {
+      products.length === 0 ? (
+        <p class="opacity-70">No products in this category yet.</p>
+      ) : (
+        <div class="grid gap-6 sm:grid-cols-2">
+          {products.map(({ data, slug }) => (
+            <article class="overflow-hidden rounded border border-skin-line bg-skin-card">
+              {data.image && typeof data.image !== "string" ? (
+                <Image
+                  src={data.image}
+                  alt={data.name}
+                  class="aspect-square w-full object-cover"
+                />
+              ) : null}
+              <div class="space-y-3 p-5">
+                <div class="flex items-start justify-between gap-4">
+                  <h2 class="text-lg font-semibold">{data.name}</h2>
+                  <span class="whitespace-nowrap font-semibold text-skin-accent">
+                    {data.price.toFixed(2)} {data.currency}
+                  </span>
+                </div>
+                {data.description ? <p>{data.description}</p> : null}
+                <a
+                  href={`/products/${slug}/`}
+                  class="inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
+                >
+                  View product
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      )
+    }
+  </Main>
+  <Footer />
+</Layout>

@@ -6,6 +6,8 @@ price: 649
 currency: TRY
 description: A lightweight everyday tote made from durable linen canvas.
 image: ../../assets/images/urun-sample.jpg
+categories:
+  - bags
 stock: 24
 available: true
 ---
