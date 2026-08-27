@@ -25,17 +25,18 @@ const blog = defineCollection({
 
 const products = defineCollection({
   type: "content",
-  schema: z.object({
-    name: z.string(),
-    slug: z.string(),
-    sku: z.string(),
-    price: z.number(),
-    currency: z.string().default("TRY"),
-    description: z.string().optional(),
-    image: z.string().optional(),
-    stock: z.number().int().nonnegative().default(0),
-    available: z.boolean().default(true),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      slug: z.string(),
+      sku: z.string(),
+      price: z.number(),
+      currency: z.string().default("TRY"),
+      description: z.string().optional(),
+      image: image().or(z.string()).optional(),
+      stock: z.number().int().nonnegative().default(0),
+      available: z.boolean().default(true),
+    }),
 });
 
 const orders = defineCollection({
