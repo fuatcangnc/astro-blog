@@ -7,10 +7,12 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const products = await getCollection("products");
   return products.map(product => ({
-    params: { slug: product.slug },
+    params: { slug: product.id },
     props: { product },
   }));
 }

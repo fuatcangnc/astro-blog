@@ -17,7 +17,7 @@ const products = (await getCollection("products"))
   <Main pageTitle="Products" pageDesc="Browse our available products.">
     <div class="grid gap-6 sm:grid-cols-2">
       {
-        products.map(({ data, slug }) => (
+        products.map(({ data, id }) => (
           <article class="overflow-hidden rounded border border-skin-line bg-skin-card">
             {data.image && typeof data.image !== "string" ? (
               <Image
@@ -38,7 +38,7 @@ const products = (await getCollection("products"))
                 {data.stock > 0 ? `${data.stock} in stock` : "Out of stock"}
               </p>
               <a
-                href={`/products/${slug}/`}
+                href={`/products/${id}/`}
                 class="inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
               >
                 View product

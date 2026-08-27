@@ -7,10 +7,12 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const categories = await getCollection("categories");
   return categories.map(category => ({
-    params: { slug: category.slug },
+    params: { slug: category.id },
     props: { category },
   }));
 }
@@ -23,7 +25,7 @@ const products = (await getCollection("products"))
     ({ data }) =>
       data.available &&
       (data.categories ?? []).some(
-        value => value.toLowerCase() === category.slug.toLowerCase()
+        value => value.toLowerCase() === category.id.toLowerCase()
       )
   )
   .sort((a, b) => a.data.name.localeCompare(b.data.name));

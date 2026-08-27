@@ -16,12 +16,12 @@ const categories = (await getCollection("categories")).sort((a, b) =>
   <Main pageTitle="Categories" pageDesc="Browse products by category.">
     <div class="grid gap-6 sm:grid-cols-2">
       {
-        categories.map(({ slug, data, body }) => (
+        categories.map(({ id, data, body }) => (
           <article class="rounded border border-skin-line bg-skin-card p-5">
             <h2 class="text-lg font-semibold">{data.name}</h2>
             {data.description ? <p class="mt-2">{data.description}</p> : null}
             <a
-              href={`/categories/${slug}/`}
+              href={`/categories/${id}/`}
               class="mt-3 inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
             >
               View category
