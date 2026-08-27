@@ -1,8 +1,9 @@
-import { SITE } from "@config";
+import { glob } from "astro/loaders";
 import { defineCollection, z } from "astro:content";
+import { SITE } from "@config";
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       author: z.string().default(SITE.author),
@@ -24,7 +25,7 @@ const blog = defineCollection({
 });
 
 const products = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/products" }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
@@ -39,7 +40,7 @@ const products = defineCollection({
 });
 
 const orders = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/orders" }),
   schema: z.object({
     order_number: z.string(),
     customer_email: z.string().email(),
