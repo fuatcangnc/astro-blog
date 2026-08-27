@@ -1,0 +1,53 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+const products = (await getCollection("products"))
+  .filter(({ data }) => data.available)
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+---
+
+<Layout title={`Products | ${SITE.title}`}>
+  <Header activeNav="products" />
+  <Main pageTitle="Products" pageDesc="Browse our available products.">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {
+        products.map(({ data, slug }) => (
+          <article class="overflow-hidden rounded border border-skin-line bg-skin-card">
+            {data.image && typeof data.image !== "string" ? (
+              <Image
+                src={data.image}
+                alt={data.name}
+                class="aspect-square w-full object-cover"
+              />
+            ) : null}
+            <div class="space-y-3 p-5">
+              <div class="flex items-start justify-between gap-4">
+                <h2 class="text-lg font-semibold">{data.name}</h2>
+                <span class="whitespace-nowrap font-semibold text-skin-accent">
+                  {data.price.toFixed(2)} {data.currency}
+                </span>
+              </div>
+              {data.description ? <p>{data.description}</p> : null}
+              <p class="text-sm opacity-70">
+                {data.stock > 0 ? `${data.stock} in stock` : "Out of stock"}
+              </p>
+              <a
+                href={`/products/${slug}/`}
+                class="inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
+              >
+                View product
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>

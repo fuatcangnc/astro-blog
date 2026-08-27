@@ -1,0 +1,52 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+export async function getStaticPaths() {
+  const products = await getCollection("products");
+  return products.map(product => ({
+    params: { slug: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const { data, body } = product;
+---
+
+<Layout title={`${data.name} | ${SITE.title}`} description={data.description}>
+  <Header />
+  <Main
+    pageTitle={data.name}
+    pageDesc={`${data.price.toFixed(2)} ${data.currency}`}
+  >
+    <div class="space-y-6">
+      {
+        data.image && typeof data.image !== "string" ? (
+          <Image
+            src={data.image}
+            alt={data.name}
+            class="max-h-[32rem] w-full rounded object-cover"
+          />
+        ) : null
+      }
+      {data.description ? <p class="text-lg">{data.description}</p> : null}
+      <p class="text-sm opacity-70">
+        {data.stock > 0 ? `${data.stock} in stock` : "Out of stock"}
+      </p>
+      {
+        body ? (
+          <div class="prose max-w-none">
+            <Fragment set:html={body} />
+          </div>
+        ) : null
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>
