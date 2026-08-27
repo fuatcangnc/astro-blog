@@ -67,6 +67,34 @@ const requestCmsAuth = async (
 };
 
 export const server = {
+  register: defineAction({
+    accept: "form",
+    input: z.object({
+      name: z.string().trim().min(2).max(120),
+      email: z.string().email(),
+      phone: z.string().trim().min(7).max(32),
+      password: z.string().min(8).max(128),
+    }),
+    handler: async ({ name, email, phone, password }, context) => {
+      await requestCmsAuth(
+        "/sign-up/email",
+        { name, email, phone, password },
+        context
+      );
+      return { message: "Account created." };
+    },
+  }),
+  signIn: defineAction({
+    accept: "form",
+    input: z.object({
+      email: z.string().email(),
+      password: z.string().min(1).max(128),
+    }),
+    handler: async ({ email, password }, context) => {
+      await requestCmsAuth("/sign-in/email", { email, password }, context);
+      return { message: "You are signed in." };
+    },
+  }),
   requestOtp: defineAction({
     accept: "form",
     input: z.object({ email: z.string().email() }),

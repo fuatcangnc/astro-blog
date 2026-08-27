@@ -6,76 +6,109 @@ import Layout from "@layouts/Layout.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
 
-const otpResult = Astro.getActionResult(actions.requestOtp);
-const signInResult = Astro.getActionResult(actions.verifyOtp);
-const sentEmail = otpResult?.data?.email;
-const error = otpResult?.error?.message || signInResult?.error?.message;
-const success = signInResult?.data?.message;
+const registerResult = Astro.getActionResult(actions.register);
+const signInResult = Astro.getActionResult(actions.signIn);
+const error = registerResult?.error?.message || signInResult?.error?.message;
+const success = registerResult?.data?.message || signInResult?.data?.message;
 ---
 
 <Layout title={`Account | ${SITE.title}`}>
   <Header />
   <Main
     pageTitle="Account"
-    pageDesc="Sign in to manage your profile and orders."
+    pageDesc="Create an account or sign in to manage your orders."
   >
-    <div class="mx-auto max-w-md space-y-8">
+    <div class="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
       <form
         method="POST"
-        action={actions.requestOtp}
+        action={actions.register}
         class="space-y-4 rounded border border-skin-line bg-skin-card p-5"
       >
-        <div>
-          <label for="email" class="font-medium">Email</label>
-          <input
-            id="email"
+        <h2 class="text-lg font-semibold">Create account</h2>
+        <label class="block"
+          >Name<input
+            name="name"
+            required
+            minlength="2"
+            maxlength="120"
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          /></label
+        >
+        <label class="block"
+          >Email<input
             name="email"
             type="email"
             required
             class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
-          />
-        </div>
+          /></label
+        >
+        <label class="block"
+          >Phone<input
+            name="phone"
+            type="tel"
+            required
+            minlength="7"
+            maxlength="32"
+            placeholder="+90 555 000 00 00"
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          /></label
+        >
+        <label class="block"
+          >Password<input
+            name="password"
+            type="password"
+            required
+            minlength="8"
+            maxlength="128"
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          /></label
+        >
         <button
           type="submit"
           class="w-full rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted"
-          >Send code</button
+          >Create account</button
         >
       </form>
-      {
-        sentEmail ? (
-          <form
-            method="POST"
-            action={actions.verifyOtp}
-            class="space-y-4 rounded border border-skin-line bg-skin-card p-5"
-          >
-            <input type="hidden" name="email" value={sentEmail} />
-            <div>
-              <label for="otp" class="font-medium">
-                Verification code
-              </label>
-              <input
-                id="otp"
-                name="otp"
-                inputmode="numeric"
-                pattern="[0-9]{6}"
-                minlength="6"
-                maxlength="6"
-                required
-                class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
-              />
-            </div>
-            <button
-              type="submit"
-              class="w-full rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted"
-            >
-              Sign in
-            </button>
-          </form>
-        ) : null
-      }
-      {error ? <p class="text-sm text-red-600">{error}</p> : null}
-      {success ? <p class="text-sm text-green-600">{success}</p> : null}
+
+      <form
+        method="POST"
+        action={actions.signIn}
+        class="space-y-4 rounded border border-skin-line bg-skin-card p-5"
+      >
+        <h2 class="text-lg font-semibold">Sign in</h2>
+        <label class="block"
+          >Email<input
+            name="email"
+            type="email"
+            required
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          /></label
+        >
+        <label class="block"
+          >Password<input
+            name="password"
+            type="password"
+            required
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          /></label
+        >
+        <button
+          type="submit"
+          class="w-full rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted"
+          >Sign in</button
+        >
+      </form>
     </div>
+    {
+      error ? (
+        <p class="mx-auto mt-6 max-w-3xl text-sm text-red-600">{error}</p>
+      ) : null
+    }
+    {
+      success ? (
+        <p class="mx-auto mt-6 max-w-3xl text-sm text-green-600">{success}</p>
+      ) : null
+    }
   </Main>
   <Footer />
 </Layout>
