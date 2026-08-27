@@ -23,4 +23,40 @@ const blog = defineCollection({
     }),
 });
 
-export const collections = { blog };
+const products = defineCollection({
+  type: "content",
+  schema: z.object({
+    name: z.string(),
+    slug: z.string(),
+    sku: z.string(),
+    price: z.number(),
+    currency: z.string().default("TRY"),
+    description: z.string().optional(),
+    image: z.string().optional(),
+    stock: z.number().int().nonnegative().default(0),
+    available: z.boolean().default(true),
+  }),
+});
+
+const orders = defineCollection({
+  type: "content",
+  schema: z.object({
+    order_number: z.string(),
+    customer_email: z.string().email(),
+    status: z.enum([
+      "pending_payment",
+      "paid",
+      "processing",
+      "shipped",
+      "completed",
+      "cancelled",
+    ]),
+    total: z.number(),
+    currency: z.string().default("TRY"),
+    items: z.string(),
+    shipping_address: z.string().optional(),
+    created_at: z.coerce.date(),
+  }),
+});
+
+export const collections = { blog, products, orders };

@@ -28,3 +28,53 @@ content:
       - { name: layout, type: string, hidden: true, default: "../layouts/AboutLayout.astro" }
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
+  - name: products
+    label: Products
+    type: collection
+    path: src/content/products
+    format: yaml-frontmatter
+    view:
+      layout: list
+      primary: name
+      fields: [ name, price, stock, available ]
+      sort: [ name ]
+      search: [ name, sku ]
+    fields:
+      - { name: name, label: Product name, type: string, required: true }
+      - { name: slug, label: Slug, type: string, required: true }
+      - { name: sku, label: SKU, type: string, required: true }
+      - { name: price, label: Price, type: number, required: true }
+      - { name: currency, label: Currency, type: string, default: TRY }
+      - { name: description, label: Description, type: string }
+      - { name: image, label: Product image, type: image }
+      - { name: stock, label: Stock, type: number, required: true, default: 0 }
+      - { name: available, label: Available, type: boolean, default: true }
+  - name: orders
+    label: Orders
+    type: collection
+    path: src/content/orders
+    format: yaml-frontmatter
+    view:
+      layout: list
+      primary: order_number
+      fields: [ order_number, customer_email, status, total, created_at ]
+      sort: [ created_at ]
+      search: [ order_number, customer_email ]
+    fields:
+      - { name: order_number, label: Order number, type: string, required: true }
+      - { name: customer_email, label: Customer email, type: string, required: true }
+      - name: status
+        label: Status
+        type: select
+        options:
+          - { label: Pending payment, value: pending_payment }
+          - { label: Paid, value: paid }
+          - { label: Processing, value: processing }
+          - { label: Shipped, value: shipped }
+          - { label: Completed, value: completed }
+          - { label: Cancelled, value: cancelled }
+      - { name: total, label: Total, type: number, required: true }
+      - { name: currency, label: Currency, type: string, default: TRY }
+      - { name: items, label: Items, type: code, options: { language: json } }
+      - { name: shipping_address, label: Shipping address, type: text }
+      - { name: created_at, label: Created at, type: date }
