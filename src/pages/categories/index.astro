@@ -17,15 +17,24 @@ const categories = (await getCollection("categories")).sort((a, b) =>
     <div class="grid gap-6 sm:grid-cols-2">
       {
         categories.map(({ id, data, body }) => (
-          <article class="rounded border border-skin-line bg-skin-card p-5">
-            <h2 class="text-lg font-semibold">{data.name}</h2>
-            {data.description ? <p class="mt-2">{data.description}</p> : null}
-            <a
-              href={`/categories/${id}/`}
-              class="mt-3 inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
-            >
-              View category
-            </a>
+          <article class="overflow-hidden rounded border border-skin-line bg-skin-card">
+            {data.image && typeof data.image === "string" ? (
+              <img
+                src={data.image}
+                alt={data.name}
+                class="aspect-video w-full object-cover"
+              />
+            ) : null}
+            <div class="p-5">
+              <h2 class="text-lg font-semibold">{data.name}</h2>
+              {data.description ? <p class="mt-2">{data.description}</p> : null}
+              <a
+                href={`/categories/${id}/`}
+                class="mt-3 inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
+              >
+                View category
+              </a>
+            </div>
           </article>
         ))
       }

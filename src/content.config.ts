@@ -30,7 +30,9 @@ const categories = defineCollection({
     z.object({
       name: z.string(),
       description: z.string().optional(),
-      image: image().or(z.string()).optional(),
+      // Absolute public URLs (e.g. /assets/x.jpg uploaded via the CMS) stay
+      // plain strings; relative paths are resolved and optimized by image().
+      image: z.string().startsWith("/").or(image()).optional(),
     }),
 });
 
@@ -43,7 +45,7 @@ const products = defineCollection({
       price: z.number(),
       currency: z.string().default("TRY"),
       description: z.string().optional(),
-      image: image().or(z.string()).optional(),
+      image: z.string().startsWith("/").or(image()).optional(),
       stock: z.number().int().nonnegative().default(0),
       available: z.boolean().default(true),
       categories: z.array(z.string()).default([]),

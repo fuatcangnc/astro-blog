@@ -19,6 +19,8 @@ export async function getStaticPaths() {
 
 const { category } = Astro.props;
 const { data, body } = category;
+const categoryImage =
+  data.image && typeof data.image !== "string" ? null : data.image ?? null;
 
 const products = (await getCollection("products"))
   .filter(
@@ -38,6 +40,16 @@ const products = (await getCollection("products"))
     pageDesc={data.description ?? "Products in this category."}
   >
     {
+      categoryImage ? (
+        <img
+          src={categoryImage}
+          alt={data.name}
+          class="mb-8 aspect-video w-full rounded object-cover"
+        />
+      ) : null
+    }
+
+    {
       body ? (
         <div class="prose mb-8 max-w-none">
           <Fragment set:html={body} />
@@ -50,10 +62,16 @@ const products = (await getCollection("products"))
         <p class="opacity-70">No products in this category yet.</p>
       ) : (
         <div class="grid gap-6 sm:grid-cols-2">
-          {products.map(({ data, slug }) => (
+          {products.map(({ data, id }) => (
             <article class="overflow-hidden rounded border border-skin-line bg-skin-card">
               {data.image && typeof data.image !== "string" ? (
                 <Image
+                  src={data.image}
+                  alt={data.name}
+                  class="aspect-square w-full object-cover"
+                />
+              ) : data.image ? (
+                <img
                   src={data.image}
                   alt={data.name}
                   class="aspect-square w-full object-cover"
@@ -68,7 +86,7 @@ const products = (await getCollection("products"))
                 </div>
                 {data.description ? <p>{data.description}</p> : null}
                 <a
-                  href={`/products/${slug}/`}
+                  href={`/products/${id}/`}
                   class="inline-block font-medium text-skin-accent underline decoration-dashed underline-offset-4"
                 >
                   View product

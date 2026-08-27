@@ -47,7 +47,7 @@ content:
           - { name: name, label: Category name, type: string, required: true }
           - { name: slug, label: Slug, type: string, required: true }
           - { name: description, label: Description, type: string }
-          - { name: image, label: Category image, type: image }
+          - { name: image, label: Category image, type: image, options: { path: public/assets } }
       - name: products
         label: Products
         type: collection
@@ -66,7 +66,7 @@ content:
           - { name: price, label: Price, type: number, required: true }
           - { name: currency, label: Currency, type: string, default: TRY }
           - { name: description, label: Description, type: string }
-          - { name: image, label: Product image, type: image }
+          - { name: image, label: Product image, type: image, options: { path: public/assets } }
           - { name: stock, label: Stock, type: number, required: true, default: 0 }
           - { name: available, label: Available, type: boolean, default: true }
           - name: categories

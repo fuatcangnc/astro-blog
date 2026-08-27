@@ -35,6 +35,12 @@ const { data, body } = product;
             alt={data.name}
             class="max-h-[32rem] w-full rounded object-cover"
           />
+        ) : data.image ? (
+          <img
+            src={data.image}
+            alt={data.name}
+            class="max-h-[32rem] w-full rounded object-cover"
+          />
         ) : null
       }
       {data.description ? <p class="text-lg">{data.description}</p> : null}
