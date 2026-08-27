@@ -28,7 +28,6 @@ const products = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      slug: z.string(),
       sku: z.string(),
       price: z.number(),
       currency: z.string().default("TRY"),
