@@ -29,7 +29,7 @@ content:
       - { name: title, label: Title, type: string }
       - { name: body, label: Body, type: rich-text, options: { input: public/assets, output: /assets } }
   - name: ecommerce
-    label: Products
+    label: Ecommerce
     type: group
     items:
       - name: products
