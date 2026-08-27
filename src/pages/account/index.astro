@@ -1,0 +1,81 @@
+---
+import { actions } from "astro:actions";
+import Footer from "@components/Footer.astro";
+import Header from "@components/Header.astro";
+import Layout from "@layouts/Layout.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+const otpResult = Astro.getActionResult(actions.requestOtp);
+const signInResult = Astro.getActionResult(actions.verifyOtp);
+const sentEmail = otpResult?.data?.email;
+const error = otpResult?.error?.message || signInResult?.error?.message;
+const success = signInResult?.data?.message;
+---
+
+<Layout title={`Account | ${SITE.title}`}>
+  <Header />
+  <Main
+    pageTitle="Account"
+    pageDesc="Sign in to manage your profile and orders."
+  >
+    <div class="mx-auto max-w-md space-y-8">
+      <form
+        method="POST"
+        action={actions.requestOtp}
+        class="space-y-4 rounded border border-skin-line bg-skin-card p-5"
+      >
+        <div>
+          <label for="email" class="font-medium">Email</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted"
+          >Send code</button
+        >
+      </form>
+      {
+        sentEmail ? (
+          <form
+            method="POST"
+            action={actions.verifyOtp}
+            class="space-y-4 rounded border border-skin-line bg-skin-card p-5"
+          >
+            <input type="hidden" name="email" value={sentEmail} />
+            <div>
+              <label for="otp" class="font-medium">
+                Verification code
+              </label>
+              <input
+                id="otp"
+                name="otp"
+                inputmode="numeric"
+                pattern="[0-9]{6}"
+                minlength="6"
+                maxlength="6"
+                required
+                class="mt-2 w-full rounded border border-skin-line bg-transparent px-3 py-2"
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full rounded bg-skin-accent px-4 py-2 font-medium text-skin-inverted"
+            >
+              Sign in
+            </button>
+          </form>
+        ) : null
+      }
+      {error ? <p class="text-sm text-red-600">{error}</p> : null}
+      {success ? <p class="text-sm text-green-600">{success}</p> : null}
+    </div>
+  </Main>
+  <Footer />
+</Layout>
