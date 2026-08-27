@@ -44,7 +44,6 @@ const requestCmsAuth = async (
       method: "POST",
       headers: {
         "content-type": "application/json",
-        cookie: context.cookies.header("cookie") || "",
       },
       body: JSON.stringify(body),
     });
