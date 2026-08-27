@@ -44,6 +44,7 @@ const requestCmsAuth = async (
       method: "POST",
       headers: {
         "content-type": "application/json",
+        origin: cmsUrl,
       },
       body: JSON.stringify(body),
     });
