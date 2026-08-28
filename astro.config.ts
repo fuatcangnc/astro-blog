@@ -4,7 +4,7 @@ import react from "@astrojs/react";
 import remarkToc from "remark-toc";
 import remarkCollapse from "remark-collapse";
 import sitemap from "@astrojs/sitemap";
-import node from "@astrojs/node";
+import cloudflare from "@astrojs/cloudflare";
 import { unified } from "@astrojs/markdown-remark";
 import { SITE } from "./src/config";
 
@@ -19,7 +19,7 @@ export default defineConfig({
     sitemap(),
   ],
   output: "server",
-  adapter: node({ mode: "standalone" }),
+  adapter: cloudflare({ prerenderEnvironment: "node" }),
   markdown: {
     processor: unified({
       remarkPlugins: [
