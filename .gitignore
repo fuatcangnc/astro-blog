@@ -24,6 +24,7 @@ pnpm-debug.log*
 
 # ignore Jampack cache files
 .jampack/
+.wrangler/
 
 # yarn
 .yarn/*
