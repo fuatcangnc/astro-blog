@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "sites": [
+    {
+      "key": "turancms",
+      "display_name": "turancms.com",
+      "website_url": "https://turancms.com",
+      "root_path": ""
+    }
+  ]
+}
