@@ -1,5 +1,5 @@
 {
-  "version": "1.2",
+  "version": "1.4",
   "media": {
     "default_library": "repo_media",
     "libraries": [
@@ -27,27 +27,6 @@
   "frontmatter_format": "yaml",
   "publishing_mode": "editorial_workflow",
   "collections": [
-    {
-      "name": "src",
-      "git_path": "/src/",
-      "file_extension": ".md",
-      "filename_pattern": "",
-      "label": "Src",
-      "collection_type": "grouped",
-      "frontmatter_schema": [
-        {
-          "name": "title",
-          "type": "title",
-          "label": "Title",
-          "required": false
-        },
-        {
-          "name": "layout",
-          "type": "text",
-          "label": "Layout",
-          "required": false
-        }
-      ]
-    }
+    "src"
   ]
 }

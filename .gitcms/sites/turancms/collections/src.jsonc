@@ -1,0 +1,21 @@
+{
+  "label": "Src",
+  "git_path": "/src/",
+  "file_extension": ".md",
+  "filename_pattern": "",
+  "collection_type": "grouped",
+  "frontmatter_schema": [
+    {
+      "name": "title",
+      "type": "title",
+      "label": "Title",
+      "required": false
+    },
+    {
+      "name": "layout",
+      "type": "text",
+      "label": "Layout",
+      "required": false
+    }
+  ]
+}
